@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MyReport</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="titulo">*Favor de rellenar todos los campos</string>
+    <string name="selecciona">Selecciona un reporte</string>
+
+    <string-array name="spn_array">
+        <item>Seleccionar Tipo de Reporte</item>
+        <item>Alumbrado Publico</item>
+        <item>Bacheo</item>
+        <item>Otros Servicios</item>
+    </string-array>
+</resources>

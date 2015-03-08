@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -49,17 +50,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class Reportes extends android.support.v4.app.Fragment implements View.OnClickListener,AdapterView.OnItemSelectedListener {
-    private EditText etNombre,etReferencia, etDescripcion,etFecha,etPersona;
-    private Button btnCargar, btnEnviar;
+public class Reportes extends android.support.v4.app.Fragment implements View.OnClickListener {
+    private EditText etNombre,etReferencia, etDescripcion,etEmail,etEntre;
+    private ImageButton btnCargar, btnEnviar;
     private Uri output;
     private File file;
-    private String addressString = "No address found",lat="lat",lon="lon",foto,spnSelection;
-    private Spinner spn;
+    private String addressString = "No address found",lat="lat",lon="lon",foto,spnSelection,nameImage,postalCode="";
+    private String spnSub,idser;
+    private Spinner spn,spn1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,18 +80,261 @@ public class Reportes extends android.support.v4.app.Fragment implements View.On
         etNombre = (EditText) v.findViewById(R.id.etNombre);
         etReferencia = (EditText) v.findViewById(R.id.etReferencia);
         etDescripcion = (EditText) v.findViewById(R.id.etDescripcion);
-        etFecha = (EditText) v.findViewById(R.id.etFecha);
-        etPersona=(EditText)v.findViewById(R.id.etPersona);
+        etEmail=(EditText)v.findViewById(R.id.etEmail);
+        etEntre=(EditText)v.findViewById(R.id.etEntre);
 
         spn=(Spinner)v.findViewById(R.id.spn);
-        spn.setOnItemSelectedListener(this);
+        spn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                          @Override
+                                          public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                              spn.setSelection(i);
+                                              spnSelection = (String) spn.getSelectedItem();
+                                              switch (spnSelection.trim()) {
+                                                  case "Alumbrado Publico":
+                                                      getActivity().runOnUiThread(new Runnable() {
+                                                          @Override
+                                                          public void run() {
+                                                              ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(),
+                                                                      R.array.alumbrado, android.R.layout.simple_spinner_item);
+                                                              adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                                              spn1.setAdapter(adapter1);
+                                                              idser="1";
+                                                          }
+                                                      });
+                                                      break;
+
+                                                  case "Bacheo":
+                                                      getActivity().runOnUiThread(new Runnable() {
+                                                          @Override
+                                                          public void run() {
+                                                              ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(),
+                                                                      R.array.bacheo, android.R.layout.simple_spinner_item);
+                                                              adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                                              spn1.setAdapter(adapter1);
+                                                              idser="2";
+                                                          }
+                                                      });
+                                                      break;
+
+                                                  case "Contaminacion":
+                                                      getActivity().runOnUiThread(new Runnable() {
+                                                          @Override
+                                                          public void run() {
+                                                              ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(),
+                                                                      R.array.contaminacion, android.R.layout.simple_spinner_item);
+                                                              adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                                              spn1.setAdapter(adapter1);
+                                                              idser="3";
+                                                          }
+                                                      });
+                                                      break;
+
+                                                  case "Desazolve":
+                                                      getActivity().runOnUiThread(new Runnable() {
+                                                          @Override
+                                                          public void run() {
+                                                              ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(),
+                                                                      R.array.desazolve, android.R.layout.simple_spinner_item);
+                                                              adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                                              spn1.setAdapter(adapter1);
+                                                              idser="4";
+                                                          }
+                                                      });
+                                                      break;
+
+                                                  case "Deshierbe":
+                                                      getActivity().runOnUiThread(new Runnable() {
+                                                          @Override
+                                                          public void run() {
+                                                              ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(),
+                                                                      R.array.deshierbe, android.R.layout.simple_spinner_item);
+                                                              adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                                              spn1.setAdapter(adapter1);
+                                                              idser="5";
+                                                          }
+                                                      });
+                                                      break;
+
+                                                  case "Fumigacion":
+                                                      getActivity().runOnUiThread(new Runnable() {
+                                                          @Override
+                                                          public void run() {
+                                                              ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(),
+                                                                      R.array.fumigacion, android.R.layout.simple_spinner_item);
+                                                              adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                                              spn1.setAdapter(adapter1);
+                                                              idser="6";
+                                                          }
+                                                      });
+                                                      break;
+
+                                                  case "Lotes Valdios":
+                                                      getActivity().runOnUiThread(new Runnable() {
+                                                          @Override
+                                                          public void run() {
+                                                              ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(),
+                                                                      R.array.lotes, android.R.layout.simple_spinner_item);
+                                                              adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                                              spn1.setAdapter(adapter1);
+                                                              idser="7";
+                                                          }
+                                                      });
+                                                      break;
+
+                                                  case "Plazas":
+                                                      getActivity().runOnUiThread(new Runnable() {
+                                                          @Override
+                                                          public void run() {
+                                                              ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(),
+                                                                      R.array.plazas, android.R.layout.simple_spinner_item);
+                                                              adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                                              spn1.setAdapter(adapter1);
+                                                              idser="8";
+                                                          }
+                                                      });
+                                                      break;
+
+                                                  case "Obstruccion de Via":
+                                                      getActivity().runOnUiThread(new Runnable() {
+                                                          @Override
+                                                          public void run() {
+                                                              ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(),
+                                                                      R.array.obstruccion, android.R.layout.simple_spinner_item);
+                                                              adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                                              spn1.setAdapter(adapter1);
+                                                              idser="9";
+                                                          }
+                                                      });
+                                                      break;
+
+                                                  case "Puentes Peatonales":
+                                                      getActivity().runOnUiThread(new Runnable() {
+                                                          @Override
+                                                          public void run() {
+                                                              ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(),
+                                                                      R.array.puentes, android.R.layout.simple_spinner_item);
+                                                              adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                                              spn1.setAdapter(adapter1);
+                                                              idser="10";
+                                                          }
+                                                      });
+                                                      break;
+
+                                                  case "Recarpeteo":
+                                                      getActivity().runOnUiThread(new Runnable() {
+                                                          @Override
+                                                          public void run() {
+                                                              ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(),
+                                                                      R.array.recarpeteo, android.R.layout.simple_spinner_item);
+                                                              adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                                              spn1.setAdapter(adapter1);
+                                                              idser="11";
+                                                          }
+                                                      });
+                                                      break;
+
+                                                  case "Basura":
+                                                      getActivity().runOnUiThread(new Runnable() {
+                                                          @Override
+                                                          public void run() {
+                                                              ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(),
+                                                                      R.array.basura, android.R.layout.simple_spinner_item);
+                                                              adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                                              spn1.setAdapter(adapter1);
+                                                              idser="12";
+                                                          }
+                                                      });
+                                                      break;
+
+                                                  case "Ruido Excesivo":
+                                                      getActivity().runOnUiThread(new Runnable() {
+                                                          @Override
+                                                          public void run() {
+                                                              ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(),
+                                                                      R.array.ruido, android.R.layout.simple_spinner_item);
+                                                              adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                                              spn1.setAdapter(adapter1);
+                                                              idser="13";
+                                                          }
+                                                      });
+                                                      break;
+
+                                                  case "Seguridad Publica":
+                                                      getActivity().runOnUiThread(new Runnable() {
+                                                          @Override
+                                                          public void run() {
+                                                              ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(),
+                                                                      R.array.seguridad, android.R.layout.simple_spinner_item);
+                                                              adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                                              spn1.setAdapter(adapter1);
+                                                              idser="14";
+                                                          }
+                                                      });
+                                                      break;
+
+                                                  case "Señalamientos Viales":
+                                                      getActivity().runOnUiThread(new Runnable() {
+                                                          @Override
+                                                          public void run() {
+                                                              ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(),
+                                                                      R.array.senalamientos, android.R.layout.simple_spinner_item);
+                                                              adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                                              spn1.setAdapter(adapter1);
+                                                              idser="15";
+                                                          }
+                                                      });
+                                                      break;
+
+                                                  case "Otros Servicios":
+                                                      getActivity().runOnUiThread(new Runnable() {
+                                                          @Override
+                                                          public void run() {
+                                                              ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(),
+                                                                      R.array.otros, android.R.layout.simple_spinner_item);
+                                                              adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                                              spn1.setAdapter(adapter1);
+                                                          }
+                                                      });
+                                                      break;
+                                              }
+                                          }
+
+                                          @Override
+                                          public void onNothingSelected(AdapterView<?> adapterView) {
+
+                                          }
+                                      });
+
+
+
+
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
         R.array.spn_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spn.setAdapter(adapter);
 
-        btnCargar = (Button) v.findViewById(R.id.btnCargar);
-        btnEnviar = (Button) v.findViewById(R.id.btnEnviar);
+
+        spn1=(Spinner)v.findViewById(R.id.spn1);
+        spn1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                spn1.setSelection(i);
+                spnSub = (String) spn1.getSelectedItem();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(),
+                R.array.defau,android.R.layout.simple_spinner_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spn1.setAdapter(adapter1);
+
+        btnCargar = (ImageButton) v.findViewById(R.id.btnCargar);
+        btnEnviar = (ImageButton) v.findViewById(R.id.btnEnviar);
         btnEnviar.setOnClickListener(this);
         btnCargar.setOnClickListener(this);
 
@@ -111,22 +357,26 @@ public class Reportes extends android.support.v4.app.Fragment implements View.On
                 break;
 
             case R.id.btnEnviar:
-                if (areFull() == true) {
+                    if (areFull()) {
                     InputStream is = null;
-                    String nombre = etPersona.getText().toString();
+                    String nombre = etEmail.getText().toString();
                     String refe = etReferencia.getText().toString();
                     String desc = etDescripcion.getText().toString();
-                    String fec = etFecha.getText().toString();
+                    String entre= etEntre.getText().toString();
+                    String cat=spnSelection+spnSub;
 
                     List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-                    nameValuePairs.add(new BasicNameValuePair("name", nombre));
+                    nameValuePairs.add(new BasicNameValuePair("email", nombre));
                     nameValuePairs.add(new BasicNameValuePair("dire", addressString));
                     nameValuePairs.add(new BasicNameValuePair("refe", refe));
                     nameValuePairs.add(new BasicNameValuePair("des", desc));
-                    nameValuePairs.add(new BasicNameValuePair("fec", fec));
                     nameValuePairs.add(new BasicNameValuePair("lat", lat));
                     nameValuePairs.add(new BasicNameValuePair("lon", lon));
-                    nameValuePairs.add(new BasicNameValuePair("tipo", spnSelection));
+                    nameValuePairs.add(new BasicNameValuePair("tipo", cat));
+                    nameValuePairs.add(new BasicNameValuePair("nameIm",etNombre.getText().toString().trim() + ".jpg"));
+                    nameValuePairs.add(new BasicNameValuePair("codigo",postalCode));
+                    nameValuePairs.add(new BasicNameValuePair("entre",entre));
+                    nameValuePairs.add(new BasicNameValuePair("id_ser",idser));
                     try {
                         if (file.exists()) new ServerUpdate().execute();
                         HttpClient httpClient = new DefaultHttpClient();
@@ -143,14 +393,12 @@ public class Reportes extends android.support.v4.app.Fragment implements View.On
                         Log.e("Client Protocol", "Log_Tag");
                         ex.printStackTrace();
                     }
-                    break;
                 }else{
                     Toast.makeText(getActivity().getApplicationContext(),"Verifica que hayas llenado todos los campos",Toast.LENGTH_SHORT).show();
                 }
         }
-    }
+   }
 
-    //This method is going to invoke the CAMERA from the device
     private void getCamera() {
         foto = Environment.getExternalStorageDirectory() + "/" + etNombre.getText().toString().trim() + ".jpg";
         file = new File(foto);
@@ -204,16 +452,7 @@ public class Reportes extends android.support.v4.app.Fragment implements View.On
         }
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-         spn.setSelection(i);
-         spnSelection = (String) spn.getSelectedItem();
-    }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
 
     class ServerUpdate extends AsyncTask<String, String, String> {
         ProgressDialog progressDialog;
@@ -252,7 +491,7 @@ public class Reportes extends android.support.v4.app.Fragment implements View.On
         httpPost=new HttpPost("http://reportapp.org/connection/InsertImagen.php");
         nameValuePairs=new ArrayList<NameValuePair>(1);
         nameValuePairs.add(new BasicNameValuePair("imagen",etNombre.getText().toString().trim()+".jpg"));
-
+        nameImage=etNombre.getText().toString().trim()+".jpg";
         try{
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             httpClient.execute(httpPost);
@@ -264,7 +503,7 @@ public class Reportes extends android.support.v4.app.Fragment implements View.On
 
 
     private void updateWithNewLocation(Location location) {
-        String latLongString = "UBicacion Desconocida";
+
 
         DecimalFormat df = new DecimalFormat("##.00");
         if (location != null) {
@@ -272,7 +511,7 @@ public class Reportes extends android.support.v4.app.Fragment implements View.On
             double lngi = location.getLongitude();
             lat= String.valueOf(lati);
             lon= String.valueOf(lngi);
-            latLongString = "Lat:" + df.format(lati) + "\nLong:" + df.format(lngi);
+
             Geocoder gc = new Geocoder(getActivity(), Locale.getDefault());
             try {
                 List<Address> addresses = gc.getFromLocation(lati, lngi, 1);
@@ -283,8 +522,10 @@ public class Reportes extends android.support.v4.app.Fragment implements View.On
                     for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
                         addressString = addressString + address.getAddressLine(i) + "\n";
                     }
-                    addressString = addressString + address.getCountryName() + "\n";
+                    addressString = addressString + address.getCountryName() + "\n"+address.getLocale()+"\n"+address.getSubLocality();
+                    postalCode=address.getPostalCode();
                 }
+
             } catch (IOException ioe) {
                 Log.e("Geocoder IOException exception: ", ioe.getMessage());
             }
@@ -293,13 +534,18 @@ public class Reportes extends android.support.v4.app.Fragment implements View.On
 
     private boolean areFull(){
         boolean request = false;
-        if (etNombre.getText().toString().trim().equals("") ||etReferencia.getText().toString().trim().equals("") || etDescripcion.getText().toString().trim().equals("") || etFecha.getText().toString().trim().equals("") ||etPersona.getText().toString().trim().equals("")){
+        if (etNombre.getText().toString().trim().equals("") ||etReferencia.getText().toString().trim().equals("") || etDescripcion.getText().toString().trim().equals("")  ||etEmail.getText().toString().trim().equals("") ||etEntre.getText().toString().trim().equals("")){
         }else{
             request=true;
         }
         return request;
     }
-}
+ }
+
+
+
+
+
 
 
 

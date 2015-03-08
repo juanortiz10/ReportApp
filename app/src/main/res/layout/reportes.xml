@@ -6,22 +6,24 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
 
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="1">
         <TextView
             style="@style/Header"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tvReporte"
-            android:text="Reporte"
-            android:textSize="30dp"
+            android:text="@string/reporte"
+            android:textSize="30sp"
             android:gravity="center"/>
 
         <TextView
@@ -29,118 +31,200 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/titulo"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:textStyle="italic"
         android:layout_marginTop="10dp"
+        style="@style/Header"
         android:id="@+id/textView" />
 
         <View style="@style/Separator" />
-
-    <EditText
+            <TextView
+                android:gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/email"
+                android:textSize="15sp"
+                android:textStyle="italic"
+                android:layout_marginTop="10dp"
+                android:inputType="textEmailAddress"
+                style="@style/Header"
+                android:id="@+id/tvQuien" />
+      <EditText
+        android:gravity="top|left"
+        android:background="@drawable/edittop"
         android:ems="10"
-        android:maxLength="50"
+        android:maxLength="30"
         android:maxLines="1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/etPersona"
-            android:hint="¿Quien reporta?"
-            android:gravity="center"
-            />
+            android:id="@+id/etEmail"
+        android:inputType="textPersonName" />
+
+            <TextView
+                android:gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/entre"
+                android:textSize="15sp"
+                android:textStyle="italic"
+                android:layout_marginTop="10dp"
+                android:inputType="textEmailAddress"
+                style="@style/Header"
+                android:id="@+id/tvEntre" />
+
+            <EditText
+                android:gravity="top|left"
+                android:background="@drawable/editdefaul"
+                android:ems="10"
+                android:maxLength="30"
+                android:maxLines="1"
+                android:layout_width="fill_parent"
+                android:layout_height="90sp"
+                android:id="@+id/etEntre"
+                android:inputType="textEmailAddress" />
+
+
+            <TextView
+                android:gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/refe"
+                android:textSize="15sp"
+                android:textStyle="italic"
+                android:layout_marginTop="10dp"
+                style="@style/Header"
+                android:id="@+id/tvRefe" />
     <EditText
+        android:gravity="top|left"
+        android:background="@drawable/editdefaul"
         android:maxLength="50"
         android:maxLines="1"
-        android:layout_marginTop="15dp"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="130sp"
         android:id="@+id/etReferencia"
-        android:layout_below="@+id/etEntre"
-        android:gravity="center"
-        android:hint="Referencia"
-        android:layout_centerHorizontal="true" />
+        android:layout_weight="0.40"
+        android:inputType="textLongMessage" />
 
+            <TextView
+                android:gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/descr"
+                android:textSize="15sp"
+                android:textStyle="italic"
+                android:layout_marginTop="10dp"
+                style="@style/Header"
+                android:id="@+id/tvDe" />
     <EditText
+        android:gravity="top|left"
         android:maxLength="200"
         android:maxLines="3"
-        android:layout_marginTop="15dp"
+        android:background="@drawable/editdefaul"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150sp"
         android:inputType="textMultiLine"
         android:ems="10"
-        android:hint="Descripcion"
-        android:gravity="center"
-        android:id="@+id/etDescripcion"
-        android:layout_below="@+id/etReferencia" />
+        android:id="@+id/etDescripcion"/>
 
-    <EditText
-        android:maxLength="10"
-        android:maxLines="1"
-        android:id="@+id/etFecha"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="15dp"
-        android:gravity="center"
-        android:hint="Fecha"
-        android:inputType="date"/>
-
-            <View style="@style/Separator" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:id="@+id/tvSpin"
+                android:text="@string/tipoR"
+                android:gravity="center"
+                style="@style/Header"
+                android:textSize="15sp"/>
+            <Spinner
+                android:layout_marginTop="10dp"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/spn"
+                android:entries="@array/spn_array"
+                android:gravity="center"
+                style="@style/AppTheme"
+                android:layout_gravity="center"
+                android:background="#ff58db7e">
+            </Spinner>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:id="@+id/tvSpin2"
+                android:text="@string/sub"
+                android:gravity="center"
+                style="@style/Header"
+                android:textSize="15sp"/>
+            <Spinner
+                android:layout_marginTop="10dp"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/spn1"
+                android:gravity="center"
+                style="@style/AppTheme"
+                android:entries="@array/defau"
+                android:layout_gravity="center"
+                android:background="#ff58db7e">
+            </Spinner>
+            <View style="@style/Separator" android:layout_marginTop="30sp"/>
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tvFoto"
-                android:text="Foto"
+                android:text="@string/foto"
                 android:gravity="center"
                 style="@style/Header"
-                android:textSize="30dp"/>
+                android:textSize="30sp"/>
 
+            <TextView
+                android:gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/nameIm"
+                android:textSize="15sp"
+                android:textStyle="italic"
+                android:layout_marginTop="10dp"
+                style="@style/Header"
+                android:id="@+id/tvNameF" />
             <EditText
                 android:maxLength="50"
                 android:maxLines="1"
-                android:layout_marginTop="10dp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/etNombre"
-                android:layout_below="@+id/textView"
+                android:background="@drawable/editdefaul"
                 android:gravity="center"
-                android:hint="Nombre(imagen)"
-                android:inputType="textPersonName"
-                android:layout_centerHorizontal="true" />
+                android:inputType="textPersonName"/>
 
-
-            <Button
+            <ImageButton
+                android:layout_marginTop="10sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/camera"
+                android:layout_gravity="center"
+                style="?android:attr/borderlessButtonStyle"
                 android:id="@+id/btnCargar"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:text="Cargar Imagen"/>
+                />
 
-            <View style="@style/Separator" android:layout_marginTop="5dp"/>
+            <View style="@style/Separator" android:layout_marginTop="20dp"/>
+            <ImageButton
+                android:id="@+id/btnEnviar"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:src="@drawable/ok"
+                android:layout_gravity="center"
+                style="?android:attr/borderlessButtonStyle" />
+
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tvSpin"
-                android:text="Tipo de Reporte"
+                android:textStyle="italic"
+                android:id="@+id/tvEnviar"
+                android:text="@string/correcto"
                 android:gravity="center"
+                android:layout_marginTop="5sp"
                 style="@style/Header"
-                android:textSize="30dp"/>
-        <Spinner
-            android:layout_marginTop="10dp"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/spn"
-            android:prompt="@string/selecciona"
-            android:entries="@array/spn_array"
-            android:gravity="center"
-            style="@style/AppTheme"
-            android:layout_gravity="center"
-            android:background="@color/ripple_material_dark">
-            </Spinner>
-            <View style="@style/Separator" android:layout_marginTop="5dp"/>
-    <Button
-       android:id="@+id/btnEnviar"
-       android:layout_width="fill_parent"
-       android:layout_height="fill_parent"
-       android:text="Enviar"
-        android:layout_marginTop="10dp"/>
-
+                android:textSize="15sp"/>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

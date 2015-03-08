@@ -1,31 +1,52 @@
 package com.example.juan.apportaofficial;
 
 import android.content.Context;
-import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.sql.SQLOutput;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class Emergencias  extends Fragment implements AdapterView.OnItemClickListener {
+import adapter.MyBaseAdapter;
+import adapter.Postal;
+
+public class Emergencias  extends Fragment {
     private String addressString = "No address found",direccion="";
-    private ListView listViewE;
-    private ArrayAdapter<String>adapter;
+    ListView lv;
+    Context context;
+    String municipio;
+    int[] prgmImages;
+    String [] prgmNameList;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,136 +56,164 @@ public class Emergencias  extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.emergencias, null);
-        listViewE=(ListView)v.findViewById(R.id.listViewE);
-        listViewE.setOnItemClickListener(this);
+        context=getActivity().getApplicationContext();
+
         LocationManager locationManager;
         locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         updateWithNewLocation(location);
-        showNumbers();
+
+        asynk as=new asynk();
+        as.execute();
+        lv=(ListView)v.findViewById(R.id.listView);
         return v;
     }
 
-    private void updateWithNewLocation(Location location) {
-        String latLongString = "Ubicacion Desconocida";
+    public void setAdapter(){
+        lv.setAdapter(new MyBaseAdapter(this, prgmNameList,prgmImages));
+    }
 
+    private void updateWithNewLocation(Location location) {
         DecimalFormat df = new DecimalFormat("##.00");
         if (location != null) {
             double lati = location.getLatitude();
             double lngi = location.getLongitude();
-            latLongString = "Lat:" + df.format(lati) + "\nLong:" + df.format(lngi);
             Geocoder gc = new Geocoder(getActivity(), Locale.getDefault());
             try {
                 List<Address> addresses = gc.getFromLocation(lati, lngi, 1);
                 if (addresses.size() == 1) {
                     addressString = "";
                     Address address = addresses.get(0);
-                    addressString = addressString + address.getAddressLine(0) + "\n";
-                    for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
-                        addressString = addressString + address.getAddressLine(i) + "\n";
-                    }
-                    addressString = addressString + address.getCountryName() + "\n";
-                    direccion=addressString;
+                       addressString = addressString + address.getPostalCode();
+                       direccion=addressString;
+                    System.out.println(direccion);
                 }
-                Toast.makeText(getActivity().getApplicationContext(),"Ubicacion Actual:\n"+direccion,Toast.LENGTH_SHORT).show();
-            } catch (IOException ioe) {
+            }catch (IOException ioe) {
                 Log.e("Geocoder IOException exception: ", ioe.getMessage());
             }
         }
     }
 
-    private void showNumbers(){
-        switch (direccion.trim()){
-            case "Monterrey, N.L.":
-                String[] numerosAtencion = new String[] {"ATENCION CIUDADANA","01 800 161 2422", "01 800 161 CIAC", "(81)8345-4545",
-                        "(81)8130-6523","(81)8130-6557","(81)8130-6558","CRUZ ROJA MONTERREY","(81)8375-1212","EMERGENCIAS","065",
-                        "CRUZ VERDE MONTERREY", "(81)8311-003","(81)8311-0014","(81)8311-0449","VIALIDAD Y TRANSITO ","060","(81)8305-0900",
-                        "POLICIA PREVENTIVA MPAL","(81)8125-9494","(81)8125-9400","POLICIA MINISTERIAL",
-                        "(81)8151-6001","CENTRO ESTATAL DE EMERGENCIAS","066", "01-800-712-4580 (Lada sin costo)",
-                        "BOMBEROS DE MONTERREY", "(81)8342-0053", "(81)8342-0054","(81)8342-0055","PROTECCION CIVIL","(81)8375-4909",
-                        "ANGELES VERDES","(81)8340-2113"};
-                adapter=new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1,numerosAtencion);
-                listViewE.setAdapter(adapter);
-                break;
-            case "Guadalupe, N.L.":
-                System.out.println("Estoy en gpe");
-                String[] numerosAtencion1 = new String[] {"ATENCION CIUDADANA","01 800 161 2422", "01 800 161 CIAC", "(81)8345-4545",
-                        "(81)8130-6523","(81)8130-6557","(81)8130-6558","CRUZ ROJA MONTERREY","(81)8375-1212","EMERGENCIAS","065",
-                        "CRUZ VERDE MONTERREY", "(81)8311-003","(81)8311-0014","(81)8311-0449","VIALIDAD Y TRANSITO ","060","(81)8305-0900",
-                        "POLICIA PREVENTIVA MPAL","(81)8125-9494","(81)8125-9400","POLICIA MINISTERIAL",
-                        "(81)8151-6001","CENTRO ESTATAL DE EMERGENCIAS","066", "01-800-712-4580 (Lada sin costo)",
-                        "BOMBEROS DE MONTERREY", "(81)8342-0053", "(81)8342-0054","(81)8342-0055","PROTECCION CIVIL","(81)8375-4909",
-                        "ANGELES VERDES","(81)8340-2113"};
-                adapter=new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1,numerosAtencion1);
-                listViewE.setAdapter(adapter);
-                break;
-            case "San Nicolas de los Garza, N.L.":
-                String[] numerosAtencion2 = new String[] {"ATENCION CIUDADANA","01 800 161 2422", "01 800 161 CIAC", "(81)8345-4545",
-                        "(81)8130-6523","(81)8130-6557","(81)8130-6558","CRUZ ROJA MONTERREY","(81)8375-1212","EMERGENCIAS","065",
-                        "CRUZ VERDE MONTERREY", "(81)8311-003","(81)8311-0014","(81)8311-0449","VIALIDAD Y TRANSITO ","060","(81)8305-0900",
-                        "POLICIA PREVENTIVA MPAL","(81)8125-9494","(81)8125-9400","POLICIA MINISTERIAL",
-                        "(81)8151-6001","CENTRO ESTATAL DE EMERGENCIAS","066", "01-800-712-4580 (Lada sin costo)",
-                        "BOMBEROS DE MONTERREY", "(81)8342-0053", "(81)8342-0054","(81)8342-0055","PROTECCION CIVIL","(81)8375-4909",
-                        "ANGELES VERDES","(81)8340-2113"};
-                adapter=new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1,numerosAtencion2);
-                listViewE.setAdapter(adapter);
-                break;
-            case "Escobedo, N.L.":
-                String[] numerosAtencion3 = new String[] {"ATENCION CIUDADANA","01 800 161 2422", "01 800 161 CIAC", "(81)8345-4545",
-                        "(81)8130-6523","(81)8130-6557","(81)8130-6558","CRUZ ROJA MONTERREY","(81)8375-1212","EMERGENCIAS","065",
-                        "CRUZ VERDE MONTERREY", "(81)8311-003","(81)8311-0014","(81)8311-0449","VIALIDAD Y TRANSITO ","060","(81)8305-0900",
-                        "POLICIA PREVENTIVA MPAL","(81)8125-9494","(81)8125-9400","POLICIA MINISTERIAL",
-                        "(81)8151-6001","CENTRO ESTATAL DE EMERGENCIAS","066", "01-800-712-4580 (Lada sin costo)",
-                        "BOMBEROS DE MONTERREY", "(81)8342-0053", "(81)8342-0054","(81)8342-0055","PROTECCION CIVIL","(81)8375-4909",
-                        "ANGELES VERDES","(81)8340-2113"};
-                adapter=new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1,numerosAtencion3);
-                listViewE.setAdapter(adapter);
-                break;
-            case "Apodaca, N.L.":
-                String[] numerosAtencion4 = new String[] {"ATENCION CIUDADANA","01 800 161 2422", "01 800 161 CIAC", "(81)8345-4545",
-                        "(81)8130-6523","(81)8130-6557","(81)8130-6558","CRUZ ROJA MONTERREY","(81)8375-1212","EMERGENCIAS","065",
-                        "CRUZ VERDE MONTERREY", "(81)8311-003","(81)8311-0014","(81)8311-0449","VIALIDAD Y TRANSITO ","060","(81)8305-0900",
-                        "POLICIA PREVENTIVA MPAL","(81)8125-9494","(81)8125-9400","POLICIA MINISTERIAL",
-                        "(81)8151-6001","CENTRO ESTATAL DE EMERGENCIAS","066", "01-800-712-4580 (Lada sin costo)",
-                        "BOMBEROS DE MONTERREY", "(81)8342-0053", "(81)8342-0054","(81)8342-0055","PROTECCION CIVIL","(81)8375-4909",
-                        "ANGELES VERDES","(81)8340-2113"};
-                adapter=new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1,numerosAtencion4);
-                listViewE.setAdapter(adapter);
-                break;
-            case "Juarez,N.L.":
-                String[] numerosAtencion5 = new String[] {"ATENCION CIUDADANA","01 800 161 2422", "01 800 161 CIAC", "(81)8345-4545",
-                        "(81)8130-6523","(81)8130-6557","(81)8130-6558","CRUZ ROJA MONTERREY","(81)8375-1212","EMERGENCIAS","065",
-                        "CRUZ VERDE MONTERREY", "(81)8311-003","(81)8311-0014","(81)8311-0449","VIALIDAD Y TRANSITO ","060","(81)8305-0900",
-                        "POLICIA PREVENTIVA MPAL","(81)8125-9494","(81)8125-9400","POLICIA MINISTERIAL",
-                        "(81)8151-6001","CENTRO ESTATAL DE EMERGENCIAS","066", "01-800-712-4580 (Lada sin costo)",
-                        "BOMBEROS DE MONTERREY", "(81)8342-0053", "(81)8342-0054","(81)8342-0055","PROTECCION CIVIL","(81)8375-4909",
-                        "ANGELES VERDES","(81)8340-2113"};
-                adapter=new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1,numerosAtencion5);
-                listViewE.setAdapter(adapter);
-                break;
-            default:
-                String[] numerosAtencion6 = new String[] {"ATENCION CIUDADANA","01 800 161 2422", "01 800 161 CIAC", "(81)8345-4545",
-                        "(81)8130-6523","(81)8130-6557","(81)8130-6558","CRUZ ROJA MONTERREY","(81)8375-1212","EMERGENCIAS","065",
-                        "CRUZ VERDE MONTERREY", "(81)8311-003","(81)8311-0014","(81)8311-0449","VIALIDAD Y TRANSITO ","060","(81)8305-0900",
-                        "POLICIA PREVENTIVA MPAL","(81)8125-9494","(81)8125-9400","POLICIA MINISTERIAL",
-                        "(81)8151-6001","CENTRO ESTATAL DE EMERGENCIAS","066", "01-800-712-4580 (Lada sin costo)",
-                        "BOMBEROS DE MONTERREY", "(81)8342-0053", "(81)8342-0054","(81)8342-0055","PROTECCION CIVIL","(81)8375-4909",
-                        "ANGELES VERDES","(81)8340-2113"};
-                adapter=new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1,numerosAtencion6);
-                listViewE.setAdapter(adapter);
-                break;
+    class asynk extends AsyncTask<Void,Void,Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                verificaNull();
+                int code=Integer.parseInt(direccion);
+                Postal postal=new Postal();
+                municipio=postal.getCodes(code);
+                checkPostal();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+    private void verificaNull(){
+        if (direccion.trim().equals("null")) {
+            direccion = "64000";
         }
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-        try{
-            String number = "tel:" +adapterView.getItemAtPosition(i).toString().trim();
-            Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(number));
-            startActivity(callIntent);
-        }catch(Exception ex){
-            Toast.makeText(getActivity().getApplicationContext(),"Selecciona un numero",Toast.LENGTH_SHORT).show();
+    private void checkPostal(){
+        String loc=municipio;
+        switch (loc.trim()){
+
+            case "Monterrey":
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        prgmImages= new int[]{R.drawable.roja, R.drawable.alarm, R.drawable.police, R.drawable.ange
+                                , R.drawable.bomberos, R.drawable.proteccion, R.drawable.verde};
+                        prgmNameList= new String[]{"(81)8375-1212 ", "(81)8125-9494 ", "(81)8305-0900", "(81)8340-2113"
+                                , "(81)8342-0053", "(81)8375-4909", "(81)8311-0033"};
+                        System.out.println("Estoy en mty");
+                        setAdapter();
+                    }
+                });
+
+                break;
+
+            case "Juarez":
+                getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                prgmImages= new int[]{R.drawable.roja, R.drawable.alarm, R.drawable.police, R.drawable.ange
+                        , R.drawable.bomberos, R.drawable.proteccion, R.drawable.verde};
+                prgmNameList= new String[]{"(81)8375-1212 ", "1771-2060 ", "1771-2050", "(81)8340-2113"
+                        , "1771-2060", "1878-0434", "(81)8311-0033"};
+                setAdapter();
+                    }
+                });
+                break;
+
+            case "Guadalupe":
+                getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                prgmImages= new int[]{R.drawable.roja, R.drawable.alarm, R.drawable.police, R.drawable.ange
+                        , R.drawable.bomberos, R.drawable.proteccion, R.drawable.verde};
+                prgmNameList= new String[]{"(81)8375-1212 ", "8030-6000 ", "8135-5900", "(81)8340-2113"
+                        , "4040-0021", "8030-6185", "4040-9080"};
+                setAdapter();
+                            }
+                        });
+                break;
+
+            case "San Nicolas":
+                getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                prgmImages= new int[]{R.drawable.roja, R.drawable.alarm, R.drawable.police, R.drawable.ange
+                        , R.drawable.bomberos, R.drawable.proteccion, R.drawable.verde};
+                prgmNameList= new String[]{"(81)8375-1212 ", "(81)8125-9494 ", "8353-3649", "(81)8340-2113"
+                        , "8383-9568", "8330-3344", "8158-1351"};
+                setAdapter();
+                    }
+                  });
+                break;
+
+            case "Escobedo":
+             getActivity().runOnUiThread(new Runnable() {
+             @Override
+             public void run() {
+                prgmImages= new int[]{R.drawable.roja, R.drawable.alarm, R.drawable.police, R.drawable.ange
+                        , R.drawable.bomberos, R.drawable.proteccion, R.drawable.verde};
+                prgmNameList= new String[]{"065", "(81)8125-9494 ", "8353-3649", "(81)8340-2113"
+                        , "8383-9568", "8397-2911", "8158-1351"};
+               setAdapter();
+                        }
+              });
+                break;
+
+            case "Apodaca":
+              getActivity().runOnUiThread(new Runnable() {
+               @Override
+                public void run() {
+                prgmImages= new int[]{R.drawable.roja, R.drawable.alarm, R.drawable.police, R.drawable.ange
+                        , R.drawable.bomberos, R.drawable.proteccion, R.drawable.verde};
+                prgmNameList= new String[]{"(81)8375-1212 ", "(81)8125-9494 ", "(81)8305-0900", "(81)8340-2113"
+                        , "(81)8342-0053", "(81)8375-4909", "(81)8311-0033"};
+                setAdapter();
+               }
+              });
+                break;
+
+            default:
+            getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                prgmImages= new int[]{R.drawable.roja, R.drawable.alarm, R.drawable.police, R.drawable.ange
+                        , R.drawable.bomberos, R.drawable.proteccion, R.drawable.verde};
+                prgmNameList= new String[]{"(81)8375-1212 ", "(81)8125-9494 ", "(81)8305-0900", "(81)8340-2113"
+                        , "(81)8342-0053", "(81)8375-4909", "(81)8311-0033"};
+                setAdapter();
+                }
+          });
+                break;
         }
     }
 }

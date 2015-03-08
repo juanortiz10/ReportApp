@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentTabHost;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
 public class Page1 extends FragmentActivity {
     private FragmentTabHost tabHost;
 

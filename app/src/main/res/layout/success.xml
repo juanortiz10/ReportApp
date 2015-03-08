@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
     <ImageView
+        android:layout_marginTop="150sp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:src="@drawable/success"
         android:id="@+id/imSuccess"/>
+
     <TextView
+        android:layout_marginTop="20sp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tvT"
-        android:text="Correcto"
+        android:text="@string/correct"
         android:gravity="center"
-        android:textSize="40dp"
+        android:textSize="30sp"
         android:textStyle="bold|italic" />
+
     <Button
+        android:layout_marginTop="10sp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Inicio"
+        android:text="@string/start"
         android:id="@+id/btnInicio"/>
 
 </LinearLayout>

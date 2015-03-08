@@ -1,16 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">MyReport</string>
+    <string name="app_name">ReportaApp</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="titulo">*Favor de rellenar todos los campos</string>
     <string name="selecciona">Selecciona un reporte</string>
-
+    <string name="emergencia">Numeros de Emergencia</string>
+    <string name="correct">Tu reporte ha sido enviado exitosamente</string>
+    <string name="start">Inicio</string>
+    <string name="email">*Email</string>
+    <string name="refe">*Referencia</string>
+    <string name="descr">*Descripcion</string>
+    <string name="foto">Foto</string>
+    <string name="nameIm">*Nombre(Imagen)</string>
+    <string name="tipoR">*Selecciona Tipo de Reporte</string>
+    <string name="correcto">Enviar</string>
+    <string name="Datos">ReportApp</string>
+    <string name="Datos1">Creadores</string>
+    <string name="Datos2">Nestor Silva I.A.S.</string>
+    <string name="Datos3">Juan Ortiz I.T.S.</string>
+    <string name="reporte">Reporte</string>
+    <string name="press">Presiona para entrar</string>
+    <string name="sub">*Selecciona una subcategoria</string>
+    <string name="entre">*Entre calles</string>
     <string-array name="spn_array">
-        <item>Seleccionar Tipo de Reporte</item>
+        <item>Seleccionar</item>
         <item>Alumbrado Publico</item>
         <item>Bacheo</item>
+        <item>Contaminacion</item>
+        <item>Desazolve</item>
+        <item>Deshierbe</item>
+        <item>Fumigacion</item>
+        <item>Lotes Valdios</item>
+        <item>Plazas</item>
+        <item>Obstruccion de Via</item>
+        <item>Puentes Peatonales</item>
+        <item>Recarpeteo</item>
+        <item>Basura</item>
+        <item>Ruido Excesivo</item>
+        <item>Seguridad Publica</item>
+        <item>Señalamientos Viales</item>
         <item>Otros Servicios</item>
+    </string-array>
+
+    <string-array name="alumbrado">
+        <item>Luminaria(s) apagada(s)</item>
+        <item>Luminaria(s) encendida(s) de dia</item>
+        <item>Luminaria(s) obstruida</item>
+        <item>Luminaria(s) prende y apaga</item>
+        <item>Poste con corriente electrica</item>
+        <item>Poste dañado o caido</item>
+    </string-array>
+
+    <string-array name="bacheo">
+        <item>Baches</item>
+        <item>Hundimientos</item>
+    </string-array>
+
+    <string-array name="contaminacion">
+        <item>Casa habitacion</item>
+        <item>Negocio y/o empresa</item>
+        <item>Quema de residuos</item>
+        <item>Rios y arroyos</item>
+    </string-array>
+
+    <string-array name="desazolve">
+        <item>Pluviales y Rejillas</item>
+        <item>Rios,arroyos y canales</item>
+    </string-array>
+
+    <string-array name="deshierbe">
+        <item>Camellones y Avenidas</item>
+        <item>Centros educativos</item>
+        <item>Plaza Publica</item>
+        <item>Recoleccion de ramas</item>
+        <item>Rios, arroyos y asequias</item>
+    </string-array>
+
+    <string-array name="fumigacion">
+        <item>Dengue</item>
+        <item>Garrapatas</item>
+        <item>Moscos</item>
+    </string-array>
+
+    <string-array name="plazas">
+        <item>Deshierbe</item>
+        <item>Falla de luminaria</item>
+        <item>Mantenimiento</item>
+        <item>Pintura</item>
+        <item>Podado de arboles</item>
+    </string-array>
+
+    <string-array name="obstruccion">
+        <item>Anuncio publicitario</item>
+        <item>Construccion</item>
+        <item>Material de Construccion</item>
+    </string-array>
+
+    <string-array name="puentes">
+        <item>Mantenimiento</item>
+    </string-array>
+
+    <string-array name="recarpeteo">
+        <item>Calle sin pavimentar</item>
+        <item>Hundimiento</item>
+        <item>Rehabilitacion de Pavimento</item>
+    </string-array>
+
+    <string-array name="basura">
+        <item>Descacharrizacion</item>
+        <item>Escuela</item>
+        <item>Plazas</item>
+        <item>Mal Servicio</item>
+    </string-array>
+
+    <string-array name="ruido">
+        <item>Casa habitacion</item>
+        <item>Negocio y/o empresa</item>
+        <item>Perifoneo</item>
+        <item>Vibraciones</item>
+    </string-array>
+
+    <string-array name="seguridad">
+        <item>Denuncia</item>
+        <item>Prescencia policiaca</item>
+    </string-array>
+
+    <string-array name="senalamientos">
+        <item>Ausencia de señalamiento</item>
+        <item>Cruce peatonal</item>
+        <item>Delimitacion de carriles</item>
+        <item>Mantenimiento de señales</item>
+        <item>Semaforo apagado</item>
+        <item>Semaforo desincronizado</item>
+    </string-array>
+
+    <string-array name="defau">
+        <item>Seleccionar</item>
+    </string-array>
+
+    <string-array name="lotes">
+        <item>Limpieza y/o deshierbe</item>
+    </string-array>
+
+    <string-array name="otros">
+        <item>Otros</item>
     </string-array>
 </resources>
